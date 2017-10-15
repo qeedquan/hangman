@@ -42,6 +42,7 @@ var (
 	}
 
 	face struct {
+		smallb *Face
 		small  *Face
 		normal *Face
 		large  *Face
@@ -123,6 +124,7 @@ func load() {
 	font.small = loadFont(filename, 30)
 
 	face.small = loadFace(font.small, sdlcolor.Black)
+	face.smallb = loadFace(font.small, sdlcolor.Blue)
 	face.normal = loadFace(font.normal, sdlcolor.Black)
 	face.large = loadFace(font.large, sdlcolor.Black)
 
@@ -387,10 +389,16 @@ func blitWord() {
 	x := int(0.01 * float64(conf.width))
 	y := int(0.90 * float64(conf.height))
 	f := face.small
+	u := face.smallb
 	s := f.Size
 	for _, ch := range game.word {
-		if grid.Used[ch] {
-			c := &f.Chars[ch]
+		if grid.Used[ch] || game.state == LOSE {
+			var c *Char
+			if !grid.Used[ch] {
+				c = &u.Chars[ch]
+			} else {
+				c = &f.Chars[ch]
+			}
 			t := c.Normal
 			_, _, w, h, err := t.Query()
 			ck(err)
