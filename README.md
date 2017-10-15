@@ -4,7 +4,8 @@
 
 
 # License
-The words file was gotten from UNIX dictionary
-The font was gotten from the Ubuntu font repository
+The words file is from the UNIX dict file
+
+The font is from the Ubuntu font repository
 
 Code is MIT
