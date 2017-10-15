@@ -72,6 +72,7 @@ func newGrid(font *sdlttf.Font) *Grid {
 
 func (g *Grid) Reset() {
 	g.Used = make(map[rune]bool)
+	g.Hic = nil
 	for i := range g.Chars {
 		g.Chars[i].State = 0x0
 	}

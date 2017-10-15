@@ -346,7 +346,7 @@ func guess(c rune) {
 			game.score += 1
 		}
 		h.matched = true
-	} else if !conf.cheat {
+	} else if !conf.cheat && hangman.Show < 0x3f {
 		hangman.Show = (hangman.Show << 1) | 1
 	}
 	game.hist = append(game.hist, h)
