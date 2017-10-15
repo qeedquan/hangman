@@ -268,6 +268,9 @@ func event() {
 }
 
 func keyDown(ev *sdl.KeyDownEvent) {
+	if game.state != PLAY {
+		return
+	}
 	c := keymap(ev.Sym)
 	if c == 0 {
 		return
