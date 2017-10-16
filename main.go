@@ -167,8 +167,8 @@ func reset() {
 		game.score = 0
 		game.undos = 10
 	} else if game.state != LOSE {
-		if game.undos+3 < 999 {
-			game.undos += 3
+		if game.undos+5 < 9999 {
+			game.undos += 5
 		}
 	}
 	game.word = words[rand.Intn(len(words))]
