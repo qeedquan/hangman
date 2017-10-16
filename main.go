@@ -18,6 +18,13 @@ import (
 )
 
 const (
+	MIN_WORDS = 3
+	MAX_WORDS = 10
+	MAX_UNDOS = 9999
+	MAX_SCORE = 9999999999
+)
+
+const (
 	PLAY = iota + 1
 	WIN
 	LOSE
@@ -134,10 +141,6 @@ func load() {
 }
 
 func loadWords(name string) []string {
-	const (
-		MIN = 3
-		MAX = 10
-	)
 	filename := filepath.Join(conf.assets, name)
 	f, err := os.Open(filename)
 	ck(err)
@@ -148,7 +151,7 @@ func loadWords(name string) []string {
 loop:
 	for s.Scan() {
 		line := s.Text()
-		if len(line) <= MIN || len(line) >= MAX {
+		if len(line) <= MIN_WORDS || len(line) >= MAX_WORDS {
 			continue
 		}
 		for _, ch := range line {
@@ -167,8 +170,9 @@ func reset() {
 		game.score = 0
 		game.undos = 10
 	} else if game.state != LOSE {
-		if game.undos+5 < 9999 {
-			game.undos += 5
+		game.undos += 5
+		if game.undos > MAX_UNDOS {
+			game.undos = MAX_UNDOS
 		}
 	}
 	game.word = words[rand.Intn(len(words))]
@@ -338,7 +342,6 @@ func undo() {
 }
 
 func guess(c rune) {
-	const MAXSCORE = 9999999999
 	if game.state != PLAY {
 		return
 	}
@@ -349,8 +352,8 @@ func guess(c rune) {
 	h := history{char: c}
 	grid.Used[c] = true
 	if strings.IndexRune(game.word, c) >= 0 {
-		if game.score < MAXSCORE {
-			game.score += 1
+		if game.score++; game.score > MAX_SCORE {
+			game.score = MAX_SCORE
 		}
 		h.matched = true
 	} else if !conf.cheat && hangman.Show < 0x3f {
