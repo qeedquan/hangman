@@ -165,7 +165,11 @@ loop:
 func reset() {
 	if game.state != WIN {
 		game.score = 0
-		game.undos = 5
+		game.undos = 10
+	} else if game.state != LOSE {
+		if game.undos+3 < 999 {
+			game.undos += 3
+		}
 	}
 	game.word = words[rand.Intn(len(words))]
 	game.hist = game.hist[:0]
@@ -362,7 +366,7 @@ func blitStatus() {
 	blitText(f, x, y, "SCORE   %010d", game.score)
 
 	y += f.Size
-	blitText(f, x, y, "UNDOS  %01d", game.undos)
+	blitText(f, x, y, "UNDOS  %04d", game.undos)
 
 	switch game.state {
 	case LOSE:
