@@ -183,7 +183,7 @@ func reset() {
 }
 
 func keymap(k sdl.Keycode) rune {
-	switch k {
+	switch unicode.ToLower(rune(k)) {
 	case sdl.K_a:
 		return 'A'
 	case sdl.K_b:
